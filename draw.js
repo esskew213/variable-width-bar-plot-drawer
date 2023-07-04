@@ -101,7 +101,6 @@ function drawChart(data) {
   ] = data.columns;
   const xMin = barCoordinates[0];
   const xMax = barCoordinates[barCoordinates.length - 1];
-
   const [yMin, yMax] = d3.extent(data, (d) => d[heightsColumnName]);
 
   const xScale = d3
@@ -155,6 +154,26 @@ function drawChart(data) {
     .attr('x', (d, i) => {
       return xScale(barCoordinates[i]);
     });
+
+  svg
+    .selectAll('text')
+    .data(data)
+    .enter()
+    .append('text')
+    .attr('font-size', '0.8em')
+    .attr('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', (d, i) => {
+      return xScale((barCoordinates[i] + barCoordinates[i + 1]) / 2);
+    })
+    .attr('y', (d) => {
+      if (d[heightsColumnName] < 0) {
+        return yScale(d[heightsColumnName]) + 15;
+      } else {
+        return yScale(d[heightsColumnName]) - 5;
+      }
+    })
+    .text((d, i) => i + 1);
   //x axis
   svg
     .append('g')
@@ -168,6 +187,7 @@ function drawChart(data) {
         .attr('y', 30)
         .attr('fill', 'black')
         .attr('text-anchor', 'end')
+        .attr('font-size', '1.5em')
         .text(widthColumnName)
     );
 
@@ -184,6 +204,7 @@ function drawChart(data) {
         .attr('y', 10)
         .attr('fill', 'currentColor')
         .attr('text-anchor', 'start')
+        .attr('font-size', '1.2em')
         .text(heightsColumnName)
     );
 
