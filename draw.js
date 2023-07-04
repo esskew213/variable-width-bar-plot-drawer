@@ -1,5 +1,6 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const body = document.querySelector('body');
+const instructions = document.querySelector('#instructions');
 const chartContainer = document.querySelector('#chart-container');
 console.log(chartContainer);
 const submitButton = document.body.querySelector('form input[type="submit"]');
@@ -27,15 +28,25 @@ fileInput.addEventListener('change', () => {
   }
 });
 
-function printErrorMessage(message) {
-  const errorMessage = document
-    .createElement('p')
-    .setAttribute('id', 'error-message');
+function deleteErrorMessages() {
+  const oldMessage = document.querySelectorAll('.error-message');
+  if (oldMessage) {
+    oldMessage.forEach((x) => x.remove());
+  }
+}
+
+function printErrorMessage(node, message) {
+  deleteErrorMessages();
+  console.log(message);
+  let errorMessage = document.createElement('p');
+  errorMessage.setAttribute('class', 'error-message');
   const errorText = document.createTextNode(message);
-  body.append(errorMessage.appendChild(errorText));
+  errorMessage.appendChild(errorText);
+  node.appendChild(errorMessage);
 }
 
 function handleSubmit(e) {
+  deleteErrorMessages();
   e.preventDefault();
   reader.readAsText(selectedFile);
   reader.addEventListener('load', generateChart, false);
@@ -53,7 +64,22 @@ function parseCSV() {
   const data = d3.csvParse(reader.result, d3.autoType);
   data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
   console.log(data);
-  return data;
+  try {
+    for (let numRows = 0; numRows < data.length; numRows++) {
+      for (let numCols = 1; numCols <= 2; numCols++) {
+        console.log(data[numRows][data.columns[numCols]]);
+        if (typeof data[numRows][data.columns[numCols]] !== 'number') {
+          throw new Error('Widths and heights must be numbers!');
+        }
+        if (numCols == 1 && data[numRows][data.columns[numCols]] < 0) {
+          throw new Error('Width must be a positive number!');
+        }
+      }
+    }
+    return data;
+  } catch (e) {
+    printErrorMessage(instructions, e);
+  }
 }
 
 function handleError() {
@@ -127,6 +153,7 @@ function drawChart(data) {
     .attr('style', 'max-width: 100%; height: auto;');
 
   // draw bars
+
   svg
     .append('g')
     .attr('fill-opacity', '80%')

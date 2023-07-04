@@ -13,6 +13,9 @@ body {
   margin: 20px auto;
   font-size: 0.9em;
 }
+.error-message {
+  color: tomato;
+}
 table {
   overflow-x: auto;
   width: 100%;
