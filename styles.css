@@ -8,7 +8,34 @@ body {
   align-items: center;
   text-align: center;
 }
+#instructions {
+  width: 100%;
+  margin: 20px auto;
+  font-size: 0.9em;
+}
+table {
+  overflow-x: auto;
+  width: 100%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-collapse: collapse;
+  overflow-wrap: break-word;
+}
 
+th,
+td {
+  text-align: left;
+  border: 2px solid;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  padding: 2px 5px;
+}
+
+th {
+  padding: 2px;
+}
 form {
   width: 100%;
   max-width: 400px;

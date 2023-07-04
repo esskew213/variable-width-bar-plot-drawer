@@ -15,6 +15,34 @@
 
 <body>
     <h1>Get your variable width bar charts here!</h1>
+    <div id="instructions">
+        Instructions for use: Please upload a csv with the following four columns.
+        <table>
+            <tr>
+                <th></th>
+                <th>item name</th>
+                <th>width of bar</th>
+                <th>height of bar</th>
+                <th>item category</th>
+            </tr>
+            <tr>
+                <td>data type</td>
+                <td>string</td>
+                <td>non-negative float</td>
+                <td>float</td>
+                <td>string</td>
+            </tr>
+            <tr>
+                <td>requirement</td>
+                <td>-</td>
+                <td>can't be negative</td>
+                <td>can be negative</td>
+                <td>up to 10 categories</td>
+            </tr>
+        </table>
+
+        The bar chart generator will rank the items by height and colour code them by category.
+    </div>
     <form action="">
         <input type="file" id="dataFile" name="dataFile" accept="text/csv">
         <input type="submit" id="submitButton" disabled></input>
