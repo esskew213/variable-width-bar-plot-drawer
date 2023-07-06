@@ -142,6 +142,7 @@ function drawChart(data) {
     .domain(data.map((d) => d[legendColumnName]))
     .range(LEGENDCOLOURS)
     .unknown('#8B8C89');
+
   // creating SVG
   const svg = d3
     .create('svg')
@@ -229,7 +230,7 @@ function drawChart(data) {
         .attr('y', 10)
         .attr('fill', 'currentColor')
         .attr('text-anchor', 'start')
-        .attr('font-size', '1.2em')
+        .attr('font-size', '1.5em')
         .text(heightsColumnName)
     );
 
@@ -241,14 +242,17 @@ function generateDataTable(data) {
   if (oldTable) {
     oldTable.remove();
   }
+
   const dataTable = d3.select('#chart-container').append('table');
+  const columns = ['S/N', ...data.columns];
+  let counter = 0;
   dataTable.attr('id', 'data-table');
   const thead = dataTable.append('thead');
   const tbody = dataTable.append('tbody');
   thead
     .append('tr')
     .selectAll('th')
-    .data(data.columns)
+    .data(columns)
     .enter()
     .append('th')
     .text((d) => d);
@@ -260,8 +264,13 @@ function generateDataTable(data) {
     .append('tr')
     .selectAll('td')
     .data((row) => {
-      return data.columns.map((header) => {
-        return row[header];
+      return columns.map((header) => {
+        if (header === 'S/N') {
+          counter++;
+          return counter;
+        } else {
+          return row[header];
+        }
       });
     })
     .enter()

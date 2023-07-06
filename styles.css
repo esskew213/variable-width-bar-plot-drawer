@@ -9,7 +9,7 @@ body {
   text-align: center;
 }
 #instructions {
-  width: 90%;
+  width: 100%;
   margin: 20px auto;
 }
 .error-message {
