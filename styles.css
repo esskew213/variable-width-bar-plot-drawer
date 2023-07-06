@@ -1,5 +1,5 @@
 body {
-  width: 100%;
+  width: 95%;
   max-width: 800px;
   font-family: 'Open Sans', sans-serif;
   display: flex;
@@ -9,20 +9,17 @@ body {
   text-align: center;
 }
 #instructions {
-  width: 100%;
+  width: 90%;
   margin: 20px auto;
-  font-size: 0.9em;
 }
 .error-message {
   color: tomato;
 }
 table {
-  overflow-x: auto;
-  width: 100%;
+  overflow-x: scroll;
+  width: fit-content;
+  max-width: 100%;
   margin: 20px auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   border-collapse: collapse;
   overflow-wrap: break-word;
 }
@@ -32,13 +29,16 @@ td {
   text-align: left;
   border: 2px solid;
   border-collapse: collapse;
-  font-size: 0.9em;
+  font-size: 0.85em;
   padding: 2px 5px;
 }
 
-th {
-  padding: 2px;
+#instructions-table {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
+
 form {
   width: 100%;
   max-width: 400px;

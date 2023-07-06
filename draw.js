@@ -57,6 +57,7 @@ function generateChart() {
   d3.selectAll('svg').remove();
   const data = parseCSV();
   drawChart(data);
+  generateDataTable(data);
 }
 
 function parseCSV() {
@@ -101,8 +102,8 @@ function getBarCoordinates(data) {
   return barCoordinates;
 }
 
-function generateLegendColours(data) {
-  const COLOURLIST = [
+function drawChart(data) {
+  const LEGENDCOLOURS = [
     '#F77F00',
     '#D62828',
     '#FCBF49',
@@ -114,16 +115,7 @@ function generateLegendColours(data) {
     '#F07167',
     '#DDA15E',
   ];
-  try {
-    return COLOURLIST.slice(0, data.length);
-  } catch {
-    printErrorMessage(
-      'Too many categories in legend. Please use fewer than 10 categories.'
-    );
-  }
-}
 
-function drawChart(data) {
   const barCoordinates = getBarCoordinates(data);
   const [
     namesColumnName,
@@ -148,7 +140,7 @@ function drawChart(data) {
   const colorScale = d3
     .scaleOrdinal()
     .domain(data.map((d) => d[legendColumnName]))
-    .range(generateLegendColours(data))
+    .range(LEGENDCOLOURS)
     .unknown('#8B8C89');
   // creating SVG
   const svg = d3
@@ -242,4 +234,40 @@ function drawChart(data) {
     );
 
   chartContainer.append(svg.node());
+}
+
+function generateDataTable(data) {
+  const oldTable = document.querySelector('#data-table');
+  if (oldTable) {
+    oldTable.remove();
+  }
+  const dataTable = d3.select('#chart-container').append('table');
+  dataTable.attr('id', 'data-table');
+  const thead = dataTable.append('thead');
+  const tbody = dataTable.append('tbody');
+  thead
+    .append('tr')
+    .selectAll('th')
+    .data(data.columns)
+    .enter()
+    .append('th')
+    .text((d) => d);
+
+  tbody
+    .selectAll('tr')
+    .data(data)
+    .enter()
+    .append('tr')
+    .selectAll('td')
+    .data((row) => {
+      return data.columns.map((header) => {
+        return row[header];
+      });
+    })
+    .enter()
+    .append('td')
+    .text((d) => {
+      console.log('aaaa');
+      return d;
+    });
 }
