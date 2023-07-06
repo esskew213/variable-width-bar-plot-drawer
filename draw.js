@@ -55,7 +55,6 @@ function handleSubmit(e) {
 
 function generateChart() {
   d3.selectAll('svg').remove();
-
   const data = parseCSV();
   drawChart(data);
 }
@@ -63,8 +62,9 @@ function generateChart() {
 function parseCSV() {
   const data = d3.csvParse(reader.result, d3.autoType);
   data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
-  console.log(data);
   try {
+    const legendList = [];
+
     for (let numRows = 0; numRows < data.length; numRows++) {
       for (let numCols = 1; numCols <= 2; numCols++) {
         console.log(data[numRows][data.columns[numCols]]);
@@ -74,6 +74,12 @@ function parseCSV() {
         if (numCols == 1 && data[numRows][data.columns[numCols]] < 0) {
           throw new Error('Width must be a positive number!');
         }
+      }
+      if (!legendList.includes(data[numRows][data.columns[3]])) {
+        legendList.push(data[numRows][data.columns[3]]);
+      }
+      if (legendList.length > 10) {
+        throw new Error('Too many categories! Please use a maximum of 10.');
       }
     }
     return data;
