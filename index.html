@@ -16,32 +16,27 @@
 <body>
     <h1>Get your variable width bar charts here!</h1>
     <div id="instructions">
-        Instructions for use: Upload a csv with the following four columns.
+        Instructions for use: Upload a csv with the following four columns. Please include headers as your first row.
+        You can name your
+        headers anything you like, e.g. after members of The Beatles.
         <table id="instructions-table">
             <tr>
-                <th></th>
+
                 <th>item name</th>
                 <th>width of bar</th>
                 <th>height of bar</th>
                 <th>item category</th>
             </tr>
             <tr>
-                <td>data type</td>
                 <td>string</td>
                 <td>non-negative number</td>
                 <td>number</td>
-                <td>string</td>
+                <td>string (up to 10 categories allowed)</td>
             </tr>
-            <tr>
-                <td>requirement</td>
-                <td>-</td>
-                <td>can't be negative</td>
-                <td>can be negative</td>
-                <td>up to 10 categories</td>
-            </tr>
+
         </table>
 
-        The bar chart generator will rank the items by height and colour code them by category.
+        The generator will rank the items by height in ascending order and colour-code them by category.
         <br />
         Please don't break me, I
         have zero error handling.

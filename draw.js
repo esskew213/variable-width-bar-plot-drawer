@@ -210,7 +210,7 @@ function drawChart(data) {
       g
         .append('text')
         .attr('x', svgWidth - marginRight)
-        .attr('y', 30)
+        .attr('y', 40)
         .attr('fill', 'black')
         .attr('text-anchor', 'end')
         .attr('font-size', '1.5em')
