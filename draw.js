@@ -239,6 +239,25 @@ function drawChart(data) {
     );
 
   chartContainer.append(svg.node());
+
+  createeDownloadLink();
+}
+
+function createeDownloadLink() {
+  const oldLink = document.querySelector('#download-link');
+  if (oldLink) {
+    oldLink.remove();
+  }
+  const svgData = document.querySelector('svg').outerHTML;
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const svgUrl = URL.createObjectURL(svgBlob);
+  const downloadLink = document.createElement('a');
+  downloadLink.setAttribute('id', 'download-link');
+  downloadLink.setAttribute('href', svgUrl);
+  downloadLink.setAttribute('download', 'bar-chart.svg');
+  const linkText = document.createTextNode('Download your svg here');
+  downloadLink.appendChild(linkText);
+  chartContainer.prepend(downloadLink);
 }
 
 function generateDataTable(data) {

@@ -39,7 +39,7 @@ td {
   justify-content: center;
 }
 #data-table {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 form {
   width: 100%;
@@ -54,4 +54,8 @@ input {
   &[type='submit'] {
     margin-bottom: 50px;
   }
+}
+#download-link {
+  display: block;
+  padding-bottom: 20px;
 }
