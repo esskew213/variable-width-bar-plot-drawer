@@ -102,7 +102,7 @@ function getBarCoordinates(data) {
   return barCoordinates;
 }
 
-function drawChart(data) {
+function getColourScale(data) {
   const LEGENDCOLOURS = [
     '#F77F00',
     '#D62828',
@@ -116,6 +116,15 @@ function drawChart(data) {
     '#DDA15E',
   ];
 
+  const UNKNOWNCOLOUR = '#8B8C89';
+  const colourScale = d3
+    .scaleOrdinal()
+    .domain(data.map((d) => d[data.columns[3]]))
+    .range(LEGENDCOLOURS)
+    .unknown(UNKNOWNCOLOUR);
+  return colourScale;
+}
+function drawChart(data) {
   const barCoordinates = getBarCoordinates(data);
   const [
     namesColumnName,
@@ -137,12 +146,6 @@ function drawChart(data) {
     .domain([yMin, yMax])
     .range([svgHeight - marginBottom, marginTop]);
 
-  const colorScale = d3
-    .scaleOrdinal()
-    .domain(data.map((d) => d[legendColumnName]))
-    .range(LEGENDCOLOURS)
-    .unknown('#8B8C89');
-
   // creating SVG
   const svg = d3
     .create('svg')
@@ -152,6 +155,7 @@ function drawChart(data) {
     .attr('style', 'max-width: 100%; height: auto;');
 
   // draw bars
+  const colourScale = getColourScale(data);
 
   svg
     .append('g')
@@ -161,7 +165,7 @@ function drawChart(data) {
     .selectAll()
     .data(data)
     .join('rect')
-    .attr('fill', (d) => colorScale(d[legendColumnName]))
+    .attr('fill', (d) => colourScale(d[legendColumnName]))
     .attr('y', (d) => {
       if (d[heightsColumnName] < 0) {
         return yScale(0);
@@ -242,10 +246,11 @@ function generateDataTable(data) {
   if (oldTable) {
     oldTable.remove();
   }
-
+  const colourScale = getColourScale(data);
   const dataTable = d3.select('#chart-container').append('table');
   const columns = ['S/N', ...data.columns];
   let counter = 0;
+  let legendColourCounter = 0;
   dataTable.attr('id', 'data-table');
   const thead = dataTable.append('thead');
   const tbody = dataTable.append('tbody');
@@ -262,6 +267,7 @@ function generateDataTable(data) {
     .data(data)
     .enter()
     .append('tr')
+    // .attr('bgcolor', (d) => colourScale(d[data.columns[3]]))
     .selectAll('td')
     .data((row) => {
       return columns.map((header) => {
@@ -275,8 +281,11 @@ function generateDataTable(data) {
     })
     .enter()
     .append('td')
+    .attr('bgcolor', (d) => {
+      legendColourCounter++;
+      return legendColourCounter % 5 === 0 ? colourScale(d) : 'white';
+    })
     .text((d) => {
-      console.log('aaaa');
       return d;
     });
 }
