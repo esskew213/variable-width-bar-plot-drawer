@@ -4,6 +4,8 @@ const radioButtons = document.querySelectorAll(
   'input[type="radio"][name="dataEntry"]'
 );
 const textArea = document.querySelector('textarea');
+const placeholderData =
+  'food,unit cost, health benefit,category\nchocolate,2,-3,sugar\nbroccoli,3,5,veg\nfish,4,7.5,protein\nrice,0.5,1,carb';
 const instructions = document.querySelector('#instructions');
 const chartContainer = document.querySelector('#chart-container');
 const submitButton = document.body.querySelector('form input[type="submit"]');
@@ -27,9 +29,11 @@ radioButtons.forEach((button) => {
       textArea.setAttribute('disabled', '');
       fileInput.removeAttribute('disabled');
       fileInput.setAttribute('style', 'display:block');
-    } else {
+    } else if (button.value === 'typeCSV') {
       console.log(button.value);
       textArea.removeAttribute('disabled');
+      textArea.value = placeholderData;
+      submitButton.removeAttribute('disabled');
       fileInput.setAttribute('disabled', '');
       fileInput.setAttribute('style', 'display:none');
       textArea.setAttribute('style', 'display:block');
@@ -41,7 +45,6 @@ textArea.addEventListener('input', () => {
   let textValue = textArea.value.trimStart();
   textArea.value = textValue;
   let submitButtonDisabled = submitButton.getAttribute('disabled');
-  console.log(submitButtonDisabled);
   if (textArea.value.length > 0 && submitButtonDisabled == '') {
     submitButton.removeAttribute('disabled');
   } else if (
@@ -89,7 +92,6 @@ function handleSubmit(e) {
   deleteErrorMessages();
   e.preventDefault();
   if (fileInput.getAttribute('disabled') !== '') {
-    console.log('aaaa');
     reader.readAsText(selectedFile);
     reader.addEventListener('load', () => generateChart(reader.result), false);
   } else {
@@ -116,7 +118,7 @@ function parseCSV(readerResult) {
         if (typeof data[numRows][data.columns[numCols]] !== 'number') {
           throw new Error('Widths and heights must be numbers!');
         }
-        if (numCols == 1 && data[numRows][data.columns[numCols]] < 0) {
+        if (numCols == 1 && data[numRows][data.columns[numCols]] <= 0) {
           throw new Error('Width must be a positive number!');
         }
       }
