@@ -240,10 +240,10 @@ function drawChart(data) {
 
   chartContainer.append(svg.node());
 
-  createeDownloadLink();
+  createDownloadLink();
 }
 
-function createeDownloadLink() {
+function createDownloadLink() {
   const oldLink = document.querySelector('#download-link');
   if (oldLink) {
     oldLink.remove();
