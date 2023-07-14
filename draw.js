@@ -1,8 +1,11 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const body = document.querySelector('body');
+const radioButtons = document.querySelectorAll(
+  'input[type="radio"][name="dataEntry"]'
+);
+const textArea = document.querySelector('textarea');
 const instructions = document.querySelector('#instructions');
 const chartContainer = document.querySelector('#chart-container');
-console.log(chartContainer);
 const submitButton = document.body.querySelector('form input[type="submit"]');
 submitButton.addEventListener('click', handleSubmit);
 const fileInput = document.getElementById('dataFile');
@@ -17,6 +20,20 @@ const marginRight = 20;
 const marginBottom = 30;
 const marginLeft = 30;
 
+radioButtons.forEach((button) => {
+  button.addEventListener('change', () => {
+    if (button.value === 'uploadCSV') {
+      textArea.setAttribute('style', 'display:none');
+      fileInput.removeAttribute('disabled');
+      fileInput.setAttribute('style', 'display:block');
+    } else {
+      console.log(button.value);
+      fileInput.setAttribute('disabled', '');
+      fileInput.setAttribute('style', 'display:none');
+      textArea.setAttribute('style', 'display:block');
+    }
+  });
+});
 // only enable the submit button if a csv file has been uploaded
 fileInput.addEventListener('change', () => {
   selectedFile = fileInput.files[0];
