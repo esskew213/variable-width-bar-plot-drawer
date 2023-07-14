@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <td>string</td>
-                <td>non-negative number</td>
+                <td>positive number</td>
                 <td>number</td>
                 <td>string (up to 10 categories allowed)</td>
             </tr>
@@ -41,7 +41,19 @@
         Please don't break me, I
         have zero error handling.
     </div>
+    <div id="radio-button-container">
+        <div class="radio-button">
+            <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
+            <label for="uploadCSV">Upload a csv</label>
+        </div>
+        <div class="radio-button">
+            <input type="radio" id="typeCSV" name="dataEntry" value="typeCSV">
+            <label for="typeCSV">Manual entry</label>
+        </div>
+    </div>
     <form action="">
+        <textarea notab="notab" name="textArea" id="textArea" placeholder="Key in your comma-separated data here"
+            rows="10"></textarea>
         <input type="file" id="dataFile" name="dataFile" accept="text/csv">
         <input type="submit" id="submitButton" value="GENERATE" disabled></input>
     </form>

@@ -1,8 +1,13 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const body = document.querySelector('body');
+const radioButtons = document.querySelectorAll(
+  'input[type="radio"][name="dataEntry"]'
+);
+const textArea = document.querySelector('textarea');
+const placeholderData =
+  'food,unit cost, health benefit,category\nchocolate,2,-3,sugar\nbroccoli,3,5,veg\nfish,4,7.5,protein\nrice,0.5,1,carb';
 const instructions = document.querySelector('#instructions');
 const chartContainer = document.querySelector('#chart-container');
-console.log(chartContainer);
 const submitButton = document.body.querySelector('form input[type="submit"]');
 submitButton.addEventListener('click', handleSubmit);
 const fileInput = document.getElementById('dataFile');
@@ -17,6 +22,39 @@ const marginRight = 20;
 const marginBottom = 30;
 const marginLeft = 30;
 
+radioButtons.forEach((button) => {
+  button.addEventListener('change', () => {
+    if (button.value === 'uploadCSV') {
+      textArea.setAttribute('style', 'display:none');
+      textArea.setAttribute('disabled', '');
+      fileInput.removeAttribute('disabled');
+      fileInput.setAttribute('style', 'display:block');
+    } else if (button.value === 'typeCSV') {
+      console.log(button.value);
+      textArea.removeAttribute('disabled');
+      textArea.value = placeholderData;
+      submitButton.removeAttribute('disabled');
+      fileInput.setAttribute('disabled', '');
+      fileInput.setAttribute('style', 'display:none');
+      textArea.setAttribute('style', 'display:block');
+    }
+  });
+});
+
+textArea.addEventListener('input', () => {
+  let textValue = textArea.value.trimStart();
+  textArea.value = textValue;
+  let submitButtonDisabled = submitButton.getAttribute('disabled');
+  if (textArea.value.length > 0 && submitButtonDisabled == '') {
+    submitButton.removeAttribute('disabled');
+  } else if (
+    textArea.value.length == 0 &&
+    submitButton.getAttribute('disabled') !== ''
+  ) {
+    submitButton.setAttribute('disabled', '');
+  }
+});
+
 // only enable the submit button if a csv file has been uploaded
 fileInput.addEventListener('change', () => {
   selectedFile = fileInput.files[0];
@@ -27,6 +65,11 @@ fileInput.addEventListener('change', () => {
     submitButton.setAttribute('disabled', '');
   }
 });
+
+function removeSVGs() {
+  removeDownloadLink();
+  d3.selectAll('svg').remove();
+}
 
 function deleteErrorMessages() {
   const oldMessage = document.querySelectorAll('.error-message');
@@ -48,20 +91,23 @@ function printErrorMessage(node, message) {
 function handleSubmit(e) {
   deleteErrorMessages();
   e.preventDefault();
-  reader.readAsText(selectedFile);
-  reader.addEventListener('load', generateChart, false);
-  reader.addEventListener('error', handleError, false);
+  if (fileInput.getAttribute('disabled') !== '') {
+    reader.readAsText(selectedFile);
+    reader.addEventListener('load', () => generateChart(reader.result), false);
+  } else {
+    generateChart(textArea.value);
+  }
 }
 
-function generateChart() {
-  d3.selectAll('svg').remove();
-  const data = parseCSV();
+function generateChart(readerResult) {
+  removeSVGs();
+  const data = parseCSV(readerResult);
   drawChart(data);
   generateDataTable(data);
 }
 
-function parseCSV() {
-  const data = d3.csvParse(reader.result, d3.autoType);
+function parseCSV(readerResult) {
+  const data = d3.csvParse(readerResult, d3.autoType);
   data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
   try {
     const legendList = [];
@@ -72,7 +118,7 @@ function parseCSV() {
         if (typeof data[numRows][data.columns[numCols]] !== 'number') {
           throw new Error('Widths and heights must be numbers!');
         }
-        if (numCols == 1 && data[numRows][data.columns[numCols]] < 0) {
+        if (numCols == 1 && data[numRows][data.columns[numCols]] <= 0) {
           throw new Error('Width must be a positive number!');
         }
       }
@@ -87,10 +133,6 @@ function parseCSV() {
   } catch (e) {
     printErrorMessage(instructions, e);
   }
-}
-
-function handleError() {
-  printErrorMessage('Error uploading csv.');
 }
 
 function getBarCoordinates(data) {
@@ -244,10 +286,7 @@ function drawChart(data) {
 }
 
 function createDownloadLink() {
-  const oldLink = document.querySelector('#download-link');
-  if (oldLink) {
-    oldLink.remove();
-  }
+  removeDownloadLink();
   const svgData = document.querySelector('svg').outerHTML;
   const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
   const svgUrl = URL.createObjectURL(svgBlob);
@@ -260,6 +299,12 @@ function createDownloadLink() {
   chartContainer.prepend(downloadLink);
 }
 
+function removeDownloadLink() {
+  const oldLink = document.querySelector('#download-link');
+  if (oldLink) {
+    oldLink.remove();
+  }
+}
 function generateDataTable(data) {
   const oldTable = document.querySelector('#data-table');
   if (oldTable) {

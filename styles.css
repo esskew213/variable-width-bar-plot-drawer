@@ -41,6 +41,16 @@ td {
 #data-table {
   margin-top: 20px;
 }
+#radio-button-container {
+  width: 95%;
+  max-width: 250px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.radio-button {
+}
 form {
   width: 100%;
   max-width: 400px;
@@ -48,17 +58,26 @@ form {
   flex-direction: column;
   align-items: center;
 }
+textarea {
+  font-family: 'Open Sans', sans-serif;
+  width: 50%;
+  margin: 20px auto;
+  display: none;
+}
 input {
+  font-family: 'Open Sans', sans-serif;
   width: 50%;
   max-width: 200px;
   margin: 10px;
-  font-family: 'Open Sans', sans-serif;
   &[type='submit'] {
     padding: 10px 5px;
     margin-bottom: 50px;
     border-radius: 10px;
     border-width: 0;
     background-color: lightblue;
+  }
+  &[type='radio'] {
+    width: min-content;
   }
 }
 input[type='submit']:enabled {
