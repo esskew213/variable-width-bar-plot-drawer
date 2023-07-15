@@ -36,28 +36,33 @@
             </tr>
 
         </table>
+        Then choose whether and how you want the data sorted. The items will be colour-coded by category (up to 10
+        categories allowed for now).
+        <br />
+        <br />
+        <p class="emphasised-text">Please don't break me, I have zero error handling. :)</p>
+    </div>
 
-        The generator will rank the items by height in ascending order and colour-code them by category.
-        <br />
-        <br />
-        <b>Please don't break me, I
-            have zero error handling.</b>
-    </div>
-    <div class="radio-button-container" id="data-entry-options-radio-container">
-        <div class="radio-button">
-            <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
-            <label for="uploadCSV">Upload a csv</label>
-        </div>
-        <div class="radio-button">
-            <input type="radio" id="typeCSV" name="dataEntry" value="typeCSV">
-            <label for="typeCSV">Manual entry</label>
-        </div>
-    </div>
 
     <form action="">
+        <p class="radio-button-header"><b>Data entry options</b></p>
+        <div class="radio-button-container" id="data-entry-options-radio-container">
+            <div class="radio-button">
+                <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
+                <label for="uploadCSV">Upload a csv</label>
+            </div>
+            <div class="radio-button">
+                <input type="radio" id="typeCSV" name="dataEntry" value="typeCSV">
+                <label for="typeCSV">Manual entry</label>
+            </div>
+        </div>
+
         <textarea notab="notab" name="textArea" id="textArea" placeholder="Key in your comma-separated data here"
             rows="10"></textarea>
+
         <input type="file" id="dataFile" name="dataFile" accept="text/csv">
+
+        <p class="radio-button-header"><b>Sorting Options</b></p>
         <div class="radio-button-container" id="sort-options-radio-container">
             <div class="radio-button">
                 <input type="radio" id="ascending" name="sortOptions" value="ASCENDING" checked>

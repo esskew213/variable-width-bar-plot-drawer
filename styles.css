@@ -17,6 +17,11 @@ body {
   color: tomato;
 }
 
+.emphasised-text {
+  color: coral;
+  font-weight: bold;
+}
+
 table {
   overflow-x: scroll;
   width: fit-content;
@@ -44,7 +49,11 @@ td {
 #data-table {
   margin-top: 20px;
 }
-
+.radio-button-header {
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
 .radio-button-container {
   width: 95%;
   max-width: 400px;
