@@ -1,7 +1,10 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const body = document.querySelector('body');
-const radioButtons = document.querySelectorAll(
+const dataEntryRadioButtons = document.querySelectorAll(
   'input[type="radio"][name="dataEntry"]'
+);
+const sortOrderRadioButtons = document.querySelectorAll(
+  'input[type="radio"][name="sortOptions"]'
 );
 const textArea = document.querySelector('textarea');
 const placeholderData =
@@ -22,7 +25,7 @@ const marginRight = 20;
 const marginBottom = 30;
 const marginLeft = 30;
 
-radioButtons.forEach((button) => {
+dataEntryRadioButtons.forEach((button) => {
   button.addEventListener('change', () => {
     if (button.value === 'uploadCSV') {
       textArea.setAttribute('style', 'display:none');
@@ -39,7 +42,6 @@ radioButtons.forEach((button) => {
       submitButton.removeAttribute('disabled');
       fileInput.setAttribute('disabled', '');
       fileInput.setAttribute('style', 'display:none');
-
       textArea.setAttribute('style', 'display:block');
     }
   });
@@ -109,11 +111,19 @@ function handleSubmit(e) {
 
 function generateChart(readerResult) {
   console.log(readerResult);
-  const data = parseCSV(readerResult);
-  drawChart(data);
-  generateDataTable(data);
+  const sortedData = parseCSV(readerResult);
+  drawChart(sortedData);
+  generateDataTable(sortedData);
 }
 
+function sortData(data, sortOption) {
+  if (sortOption === 'ASCENDING') {
+    data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
+  } else if (sortOption === 'DESCENDING') {
+    data.sort((a, b) => d3.descending(a[data.columns[2]], b[data.columns[2]]));
+  }
+  return data;
+}
 function parseCSV(readerResult) {
   try {
     const data = d3.csvParse(readerResult, d3.autoType);
@@ -122,27 +132,35 @@ function parseCSV(readerResult) {
         'Please make sure you have four columns and a header row.'
       );
     }
-    data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
+    const sortOption = document.querySelector(
+      'input[type="radio"][name="sortOptions"]:checked'
+    ).value;
+    const sortedData = sortData(data, sortOption);
     const legendList = [];
 
-    for (let numRows = 0; numRows < data.length; numRows++) {
+    for (let numRows = 0; numRows < sortedData.length; numRows++) {
       for (let numCols = 1; numCols <= 2; numCols++) {
-        console.log(data[numRows][data.columns[numCols]]);
-        if (typeof data[numRows][data.columns[numCols]] !== 'number') {
+        console.log(sortedData[numRows][sortedData.columns[numCols]]);
+        if (
+          typeof sortedData[numRows][sortedData.columns[numCols]] !== 'number'
+        ) {
           throw new Error('Widths and heights must be numbers!');
         }
-        if (numCols == 1 && data[numRows][data.columns[numCols]] <= 0) {
+        if (
+          numCols == 1 &&
+          sortedData[numRows][sortedData.columns[numCols]] <= 0
+        ) {
           throw new Error('Width must be a positive number!');
         }
       }
-      if (!legendList.includes(data[numRows][data.columns[3]])) {
-        legendList.push(data[numRows][data.columns[3]]);
+      if (!legendList.includes(sortedData[numRows][sortedData.columns[3]])) {
+        legendList.push(sortedData[numRows][sortedData.columns[3]]);
       }
       if (legendList.length > 10) {
         throw new Error('Too many categories! Please use a maximum of 10.');
       }
     }
-    return data;
+    return sortedData;
   } catch (e) {
     printErrorMessage(instructions, e);
   }
