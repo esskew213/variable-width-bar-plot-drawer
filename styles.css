@@ -98,8 +98,9 @@ form {
 }
 textarea {
   font-family: 'Open Sans', sans-serif;
-  width: 100%;
-  margin: 20px auto;
+  width: 95%;
+  max-width: 400px;
+  margin: 20px 0;
   display: none;
 }
 input {
