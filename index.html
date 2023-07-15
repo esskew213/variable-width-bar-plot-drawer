@@ -15,8 +15,17 @@
 
 <body>
     <h1>Get your variable width bar charts here!</h1>
+    <div class="header-section">
+        <a href="https://d3js.org/" target=”_blank” class="logo-link">Powered by <img class='logo-img' src="d3.svg"
+                alt="D3 logo" width="25" height="25" /></a>
+        <a href="https://github.com/esskew213/variable-width-bar-plot-drawer" target=”_blank” class="logo-link">Github
+            Repo
+            <img class='logo-img' src="kuehlogo.png" alt="sarah logo" width="25" height="25" /></a>
+
+    </div>
     <div id="instructions">
-        <em>Instructions for use:</em> Upload a csv or key in comma-separated values manually.
+        <b>Instructions for use:</b>
+        Upload a csv or key in comma-separated values manually.
         Make sure you have the following four columns, and include headers as your first row.
         You can name your
         headers anything you like, e.g. after members of The Beatles.
@@ -36,39 +45,46 @@
             </tr>
 
         </table>
+        Then choose whether and how you want the data sorted (chart visuals are optimised for ascending order). The
+        items
+        will be colour-coded by category (up to 10
+        categories allowed for now).
+        <br />
+        <br />
+        <p class="emphasised-text">Please don't break me, I have zero error handling. :)</p>
+    </div>
 
-        The generator will rank the items by height in ascending order and colour-code them by category.
-        <br />
-        <br />
-        <b>Please don't break me, I
-            have zero error handling.</b>
-    </div>
-    <div class="radio-button-container" id="data-entry-options-radio-container">
-        <div class="radio-button">
-            <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
-            <label for="uploadCSV">Upload a csv</label>
-        </div>
-        <div class="radio-button">
-            <input type="radio" id="typeCSV" name="dataEntry" value="typeCSV">
-            <label for="typeCSV">Manual entry</label>
-        </div>
-    </div>
 
     <form action="">
+        <p class="radio-button-header"><b>Data entry options</b></p>
+        <div class="radio-button-container" id="data-entry-options-radio-container">
+            <div class="radio-button">
+                <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
+                <label for="uploadCSV">Upload a csv</label>
+            </div>
+            <div class="radio-button">
+                <input type="radio" id="typeCSV" name="dataEntry" value="typeCSV">
+                <label for="typeCSV">Manual entry</label>
+            </div>
+        </div>
+
         <textarea notab="notab" name="textArea" id="textArea" placeholder="Key in your comma-separated data here"
             rows="10"></textarea>
+
         <input type="file" id="dataFile" name="dataFile" accept="text/csv">
+
+        <p class="radio-button-header"><b>Sorting Options</b></p>
         <div class="radio-button-container" id="sort-options-radio-container">
             <div class="radio-button">
-                <input type="radio" id="ascending" name="sortOptions" value="ascending" checked>
+                <input type="radio" id="ascending" name="sortOptions" value="ASCENDING" checked>
                 <label for="ascending">Ascending</label>
             </div>
             <div class="radio-button">
-                <input type="radio" id="descending" name="sortOptions" value="descending">
+                <input type="radio" id="descending" name="sortOptions" value="DESCENDING">
                 <label for="descending">Descending</label>
             </div>
             <div class="radio-button">
-                <input type="radio" id="unsorted" name="sortOptions" value="unsorted">
+                <input type="radio" id="unsorted" name="sortOptions" value="UNSORTED">
                 <label for="descending">Unsorted</label>
             </div>
         </div>

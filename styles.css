@@ -8,6 +8,31 @@ body {
   align-items: flex-start;
 }
 
+.header-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+.logo-link {
+  width: fit-content;
+  max-width: 200px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 20px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: darkslategray;
+}
+
+.logo-img {
+  padding: 0 10px;
+}
+
 #instructions {
   width: 100%;
   margin: 20px 0;
@@ -15,6 +40,11 @@ body {
 
 .error-message {
   color: tomato;
+}
+
+.emphasised-text {
+  color: coral;
+  font-weight: bold;
 }
 
 table {
@@ -44,7 +74,11 @@ td {
 #data-table {
   margin-top: 20px;
 }
-
+.radio-button-header {
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
 .radio-button-container {
   width: 95%;
   max-width: 400px;
