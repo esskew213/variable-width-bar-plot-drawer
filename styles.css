@@ -5,21 +5,23 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
 }
+
 #instructions {
   width: 100%;
-  margin: 20px auto;
+  margin: 20px 0;
 }
+
 .error-message {
   color: tomato;
 }
+
 table {
   overflow-x: scroll;
   width: fit-content;
   max-width: 100%;
-  margin: 20px auto;
+  margin: 20px 0;
   border-collapse: collapse;
   overflow-wrap: break-word;
 }
@@ -38,29 +40,31 @@ td {
   flex-direction: row;
   justify-content: center;
 }
+
 #data-table {
   margin-top: 20px;
 }
-#radio-button-container {
+
+.radio-button-container {
   width: 95%;
-  max-width: 250px;
+  max-width: 400px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
-.radio-button {
-}
+
 form {
   width: 100%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  margin-bottom: 50px;
 }
 textarea {
   font-family: 'Open Sans', sans-serif;
-  width: 50%;
+  width: 100%;
   margin: 20px auto;
   display: none;
 }
@@ -70,8 +74,8 @@ input {
   max-width: 200px;
   margin: 10px;
   &[type='submit'] {
+    margin-top: 20px;
     padding: 10px 5px;
-    margin-bottom: 50px;
     border-radius: 10px;
     border-width: 0;
     background-color: lightblue;
@@ -87,6 +91,9 @@ input[type='submit']:enabled {
   box-shadow: 2px 2px 5px darkslategrey;
 }
 input[type='submit']:hover:enabled {
+  background-color: darkslategrey;
+}
+input[type='submit']:active:enabled {
   background-color: darkslategrey;
   box-shadow: 1px 1px 2px darkslategrey;
 }

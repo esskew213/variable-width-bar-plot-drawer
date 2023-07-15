@@ -16,7 +16,8 @@
 <body>
     <h1>Get your variable width bar charts here!</h1>
     <div id="instructions">
-        Instructions for use: Upload a csv with the following four columns. Please include headers as your first row.
+        <em>Instructions for use:</em> Upload a csv or key in comma-separated values manually.
+        Make sure you have the following four columns, and include headers as your first row.
         You can name your
         headers anything you like, e.g. after members of The Beatles.
         <table id="instructions-table">
@@ -38,10 +39,11 @@
 
         The generator will rank the items by height in ascending order and colour-code them by category.
         <br />
-        Please don't break me, I
-        have zero error handling.
+        <br />
+        <b>Please don't break me, I
+            have zero error handling.</b>
     </div>
-    <div id="radio-button-container">
+    <div class="radio-button-container" id="data-entry-options-radio-container">
         <div class="radio-button">
             <input type="radio" id="uploadCSV" name="dataEntry" value="uploadCSV" checked>
             <label for="uploadCSV">Upload a csv</label>
@@ -51,12 +53,28 @@
             <label for="typeCSV">Manual entry</label>
         </div>
     </div>
+
     <form action="">
         <textarea notab="notab" name="textArea" id="textArea" placeholder="Key in your comma-separated data here"
             rows="10"></textarea>
         <input type="file" id="dataFile" name="dataFile" accept="text/csv">
+        <div class="radio-button-container" id="sort-options-radio-container">
+            <div class="radio-button">
+                <input type="radio" id="ascending" name="sortOptions" value="ascending" checked>
+                <label for="ascending">Ascending</label>
+            </div>
+            <div class="radio-button">
+                <input type="radio" id="descending" name="sortOptions" value="descending">
+                <label for="descending">Descending</label>
+            </div>
+            <div class="radio-button">
+                <input type="radio" id="unsorted" name="sortOptions" value="unsorted">
+                <label for="descending">Unsorted</label>
+            </div>
+        </div>
         <input type="submit" id="submitButton" value="GENERATE" disabled></input>
     </form>
+
     <div id="chart-container">
     </div>
 </body>
