@@ -11,7 +11,7 @@ const chartContainer = document.querySelector('#chart-container');
 const submitButton = document.body.querySelector('form input[type="submit"]');
 submitButton.addEventListener('click', handleSubmit);
 const fileInput = document.getElementById('dataFile');
-const reader = new FileReader();
+
 let selectedFile;
 
 //chart dimensions
@@ -29,6 +29,9 @@ radioButtons.forEach((button) => {
       textArea.setAttribute('disabled', '');
       fileInput.removeAttribute('disabled');
       fileInput.setAttribute('style', 'display:block');
+      if (fileInput.value == '') {
+        submitButton.setAttribute('disabled', '');
+      }
     } else if (button.value === 'typeCSV') {
       console.log(button.value);
       textArea.removeAttribute('disabled');
@@ -36,6 +39,7 @@ radioButtons.forEach((button) => {
       submitButton.removeAttribute('disabled');
       fileInput.setAttribute('disabled', '');
       fileInput.setAttribute('style', 'display:none');
+
       textArea.setAttribute('style', 'display:block');
     }
   });
@@ -58,7 +62,6 @@ textArea.addEventListener('input', () => {
 // only enable the submit button if a csv file has been uploaded
 fileInput.addEventListener('change', () => {
   selectedFile = fileInput.files[0];
-  console.log(selectedFile);
   if (selectedFile) {
     submitButton.removeAttribute('disabled');
   } else {
@@ -68,6 +71,7 @@ fileInput.addEventListener('change', () => {
 
 function removeSVGs() {
   removeDownloadLink();
+  removeTable();
   d3.selectAll('svg').remove();
 }
 
@@ -80,6 +84,7 @@ function deleteErrorMessages() {
 
 function printErrorMessage(node, message) {
   deleteErrorMessages();
+  removeSVGs();
   console.log(message);
   let errorMessage = document.createElement('p');
   errorMessage.setAttribute('class', 'error-message');
@@ -89,9 +94,12 @@ function printErrorMessage(node, message) {
 }
 
 function handleSubmit(e) {
-  deleteErrorMessages();
   e.preventDefault();
+  deleteErrorMessages();
+  removeSVGs();
+  const reader = new FileReader();
   if (fileInput.getAttribute('disabled') !== '') {
+    console.log(selectedFile);
     reader.readAsText(selectedFile);
     reader.addEventListener('load', () => generateChart(reader.result), false);
   } else {
@@ -100,16 +108,21 @@ function handleSubmit(e) {
 }
 
 function generateChart(readerResult) {
-  removeSVGs();
+  console.log(readerResult);
   const data = parseCSV(readerResult);
   drawChart(data);
   generateDataTable(data);
 }
 
 function parseCSV(readerResult) {
-  const data = d3.csvParse(readerResult, d3.autoType);
-  data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
   try {
+    const data = d3.csvParse(readerResult, d3.autoType);
+    if (data.columns.length !== 4) {
+      throw new Error(
+        'Please make sure you have four columns and a header row.'
+      );
+    }
+    data.sort((a, b) => d3.ascending(a[data.columns[2]], b[data.columns[2]]));
     const legendList = [];
 
     for (let numRows = 0; numRows < data.length; numRows++) {
@@ -305,11 +318,14 @@ function removeDownloadLink() {
     oldLink.remove();
   }
 }
-function generateDataTable(data) {
+function removeTable() {
   const oldTable = document.querySelector('#data-table');
   if (oldTable) {
     oldTable.remove();
   }
+}
+function generateDataTable(data) {
+  removeTable();
   const colourScale = getColourScale(data);
   const dataTable = d3.select('#chart-container').append('table');
   const columns = ['S/N', ...data.columns];
